@@ -9,9 +9,9 @@ mod user;
 
 cfg_if! {
 if #[cfg(feature = "ssr")] {
+    use crate::app::App;
     use crate::fallback::file_and_error_handler;
     use crate::server::{AppState ,SurrealPool, AuthSession};
-    use crate::app::App;
     use crate::user::User;
     use axum::{
         response::{Response, IntoResponse},
