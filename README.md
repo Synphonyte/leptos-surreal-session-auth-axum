@@ -1,34 +1,4 @@
-<picture>
-    <source srcset="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_Solid_White.svg" media="(prefers-color-scheme: dark)">
-    <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo">
-</picture>
-
-# Leptos Axum Starter Template
-
-This is a template for use with the [Leptos](https://github.com/leptos-rs/leptos) web framework and the [cargo-leptos](https://github.com/akesson/cargo-leptos) tool using [Axum](https://github.com/tokio-rs/axum).
-
-## Creating your template repo
-
-If you don't have `cargo-leptos` installed you can install it with
-
-```bash
-cargo install cargo-leptos
-```
-
-Then run
-```bash
-cargo leptos new --git leptos-rs/start-axum
-```
-
-to generate a new project template.
-
-```bash
-cd test
-```
-
-to go to your newly created project.  
-Feel free to explore the project structure, but the best place to start with your application code is in `src/app.rs`.  
-Addtionally, Cargo.toml may need updating as new versions of the dependencies are released, especially if things are not working after a `cargo update`.
+# Leptos Surrealdb Session Auth Axum Starter Template
 
 ## Running your project
 
@@ -38,12 +8,18 @@ cargo leptos watch
 
 ## Installing Additional Tools
 
-By default, `cargo-leptos` uses `nightly` Rust, `cargo-generate`, and `sass`. If you run into any trouble, you may need to install one or more of these tools.
+You may need to install one or more of these tools.
 
 1. `rustup toolchain install nightly --allow-downgrade` - make sure you have Rust nightly
 2. `rustup target add wasm32-unknown-unknown` - add the ability to compile Rust to WebAssembly
-3. `cargo install cargo-generate` - install `cargo-generate` binary (should be installed automatically in future)
-4. `npm install -g sass` - install `dart-sass` (should be optional in future
+
+## Run Surreal Server
+
+1. Install surreal on your machine https://docs.surrealdb.com/docs/installation/overview
+2. Run disk based server
+```bash
+surreal start --user root --pass root --bind 127.0.0.1:8000 file://path/to/mydatabase
+```
 
 ## Compiling for Release
 ```bash
@@ -72,12 +48,12 @@ After running a `cargo leptos build --release` the minimum files needed are:
 
 Copy these files to your remote server. The directory structure should be:
 ```text
-test
+project_name
 site/
 ```
 Set the following environment variables (updating for your project as needed):
 ```text
-LEPTOS_OUTPUT_NAME="test"
+LEPTOS_OUTPUT_NAME="project_name"
 LEPTOS_SITE_ROOT="site"
 LEPTOS_SITE_PKG_DIR="pkg"
 LEPTOS_SITE_ADDR="127.0.0.1:3000"
