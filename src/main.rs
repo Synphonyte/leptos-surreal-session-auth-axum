@@ -16,8 +16,8 @@ if #[cfg(feature = "ssr")] {
     use axum::{
         response::{Response, IntoResponse},
         routing::get,
-        extract::{Path, State, RawQuery},
-        http::{Request, header::HeaderMap},
+        extract::State,
+        http::Request,
         body::Body as AxumBody,
         Router,
     };
@@ -29,12 +29,17 @@ if #[cfg(feature = "ssr")] {
     use surrealdb::engine::remote::ws::{Ws, Client};
     use surrealdb::opt::auth::Root;
 
-    async fn server_fn_handler(State(app_state): State<AppState>, auth_session: AuthSession, path: Path<String>, headers: HeaderMap, raw_query: RawQuery,
-    request: Request<AxumBody>) -> impl IntoResponse {
-        handle_server_fns_with_context(path, headers, raw_query, move || {
+    async fn server_fn_handler(
+            State(app_state): State<AppState>,
+            auth_session: AuthSession,
+            request: Request<AxumBody>
+    ) -> impl IntoResponse {
+        handle_server_fns_with_context(
+        move || {
             provide_context(auth_session.clone());
             provide_context(app_state.pool.clone());
-        }, request).await
+        }, request
+            ).await
     }
 
     async fn leptos_routes_handler(auth_session: AuthSession, State(app_state): State<AppState>, req: Request<AxumBody>) -> Response{
@@ -93,9 +98,9 @@ if #[cfg(feature = "ssr")] {
             .layer(SessionLayer::new(session_store))
             .with_state(app_state);
 
+        let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
         log!("listening on http://{}", &addr);
-        axum::Server::bind(&addr)
-            .serve(app.into_make_service())
+        axum::serve(listener, app.into_make_service())
             .await
             .unwrap();
     }

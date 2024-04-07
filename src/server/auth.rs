@@ -10,13 +10,14 @@ pub type SurrealPool = Surreal<Client>;
 pub type AuthSession =
     axum_session_auth::AuthSession<User, i64, SessionSurrealPool<Client>, SurrealPool>;
 
-pub fn pool() -> Result<SurrealPool, ServerFnError> {
-    use_context::<SurrealPool>().ok_or_else(|| ServerFnError::ServerError("Pool missing.".into()))
+pub fn pool() -> Result<SurrealPool, ServerFnError<String>> {
+    use_context::<SurrealPool>()
+        .ok_or_else(|| ServerFnError::WrappedServerError("Pool missing.".to_string()))
 }
 
-pub fn auth() -> Result<AuthSession, ServerFnError> {
+pub fn auth() -> Result<AuthSession, ServerFnError<String>> {
     use_context::<AuthSession>()
-        .ok_or_else(|| ServerFnError::ServerError("Auth session missing.".into()))
+        .ok_or_else(|| ServerFnError::WrappedServerError("Auth session missing.".to_string()))
 }
 
 impl User {

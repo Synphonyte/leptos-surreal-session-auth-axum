@@ -3,7 +3,7 @@ use leptos::*;
 use leptos_router::*;
 
 #[component]
-pub fn Signup(action: Action<Signup, Result<(), ServerFnError>>) -> impl IntoView {
+pub fn Signup(action: Action<Signup, Result<(), ServerFnError<String>>>) -> impl IntoView {
     view! {
         <ActionForm action=action>
             <h1>"Sign Up"</h1>
